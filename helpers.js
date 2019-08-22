@@ -21,3 +21,17 @@ export const retryOnException = async (cb, args, ms = 61000) => {
     return retryOnException(cb, args, ms);
   }
 };
+
+export const humanReadableDate = () => {
+  const date = new Date();
+  const options = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  };
+  const readable = date.toLocaleDateString('en-US', options);
+  return readable;
+};

@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { humanReadableDate } from './helpers';
 
 let max = 0;
 
@@ -31,16 +32,7 @@ const queryLabels = () => {
 const calculateMaxAndLog = (start) => {
   const end = Date.now();
   const total = end - start;
-  const date = new Date();
-  const options = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric'
-  };
-  const readable = date.toLocaleDateString('en-US', options);
+  const readable = humanReadableDate();
   console.log(`End ${end}`);
   console.log(`Finished in ${total} ms`);
 
