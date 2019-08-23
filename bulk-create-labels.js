@@ -79,7 +79,7 @@ const makeLabels = async (dataRows = [], apiKey = process.env.API_KEY) => {
 };
 
 const fetchAndMake = async () => {
-  const dataRows = await getDatarows({ end: 20000 });
+  const dataRows = await getDatarows({ end: process.env.NUM_DATAROWS });
 
   return makeLabels(dataRows);
 };

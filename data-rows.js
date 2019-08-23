@@ -36,12 +36,12 @@ const getPageOfDatarows = async (skip = 0) => {
     method: 'POST',
     mode: 'cors'
   })
-    .then((response) => response.json())
-    .then((data) => data.data.project.dataRows)
+    .then((res) => res.json())
+    .then((json) => json.data.project.dataRows)
     .catch((e) => console.error(e));
 };
 
-export const getDatarows = async ({ start = 0, end = 40000 }) => {
+export const getDatarows = async ({ start = 0, end = 1000 }) => {
   if (start >= end) {
     return [];
   }
