@@ -1,6 +1,7 @@
-import { humanReadableDate } from './helpers';
+import { humanReadableDate, tap } from './helpers';
+import fetch from 'node-fetch';
 
-const bulkDelete = () => {
+export const bulkDelete = () => {
   const start = Date.now();
   console.log(
     `Starting bulkDelete operation on project ${
@@ -12,28 +13,30 @@ const bulkDelete = () => {
     credentials: 'include',
     headers: {
       accept: '*/*',
-      authorization:
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjanpiamRqcTJhNmVzMDg2NnlpbW11cjB2Iiwib3JnYW5pemF0aW9uSWQiOiJjanl5bjVzbTg2a2N3MDg2NmxscnJjNmZ3IiwiaWF0IjoxNTY2NTEyMTkwLCJleHAiOjE1NjcxMTY5OTB9.VgeiX00G--XFwYrktp-AOM6lgBBox03n5xBR-SOSEEE',
-      'content-type': 'application/json',
-      'sec-fetch-mode': 'cors'
+      'accept-language': 'en-US,en;q=0.9,la;q=0.8',
+      authorization: `Bearer ${process.env.API_KEY}`,
+      'content-type': 'application/json'
     },
-    referrer:
-      'https://staging-app.labelbox.com/projects/cjyyn5sqm6keg0866cez9uact/labels/activity',
-    referrerPolicy: 'no-referrer-when-downgrade',
+    referrer: 'https://staging-api.labelbox.com/graphql',
     body: JSON.stringify({
       operationName: 'BulkDeleteLabels',
       variables: {
         makeTemplates: true,
         projectId: process.env.PROJECT_ID,
-        pageSize: 10,
-        skip: 0,
-        labelsWhere: { createdBy: {}, dataRow: {}, type_in: ['Any', 'Skip'] }
+        labelsWhere: {}
       },
-      query:
-        'mutation BulkDeleteLabels($projectId: ID!, $makeTemplates: Boolean = false, $labelsWhere: WhereBulkLabelDelete, $first: PageSize, $skip: Int) {\\n  project(where: {id: $projectId}) {\\n    bulkDeleteLabels(where: $labelsWhere, makeTemplates: $makeTemplates, waitForQueue: true, first: $first, skip: $skip) {\\n      count\\n      success\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n'
+      query: `mutation
+        BulkDeleteLabels($projectId: ID!, $makeTemplates: Boolean, $labelsWhere: WhereBulkLabelDelete) {
+          project(where: {id: $projectId}) {
+            bulkDeleteLabels(where: $labelsWhere, makeTemplates: $makeTemplates, waitForQueue: true) {
+              count
+              success
+            }
+          }
+        }
+      `
     }),
-    method: 'POST',
-    mode: 'cors'
+    method: 'POST'
   }).then(() => logEnd(start));
 };
 
