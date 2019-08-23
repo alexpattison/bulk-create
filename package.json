@@ -5,8 +5,8 @@
   "main": "bulk-create-labels.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "log": "source .env && node -r esm log-and-delete.js >> log-output.txt",
-    "create": "source .env && node -r esm bulk-create-labels.js >> create-output.txt"
+    "log": "source .env && node -r esm log-and-delete.js 2>&1 | tee -a log-output.txt",
+    "create": "source .env && node -r esm bulk-create-labels.js | tee -a create-output.txt"
   },
   "author": "",
   "license": "ISC",
